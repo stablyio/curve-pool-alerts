@@ -5,6 +5,7 @@ export interface PriceAlert {
     currentPrice: number;
     threshold: number;
     timestamp: string;
+    blockchainId: string;
 }
 
 export class PriceChecker {
@@ -17,6 +18,7 @@ export class PriceChecker {
                 currentPrice: tokenPrice.price,
                 threshold: this.threshold,
                 timestamp: new Date().toISOString(),
+                blockchainId: tokenPrice.blockchainId,
             };
         }
         return null;

@@ -22,3 +22,6 @@ cdk.out
 # OS
 .DS_Store
 Thumbs.db
+
+# Config
+src/lambda/config.ts

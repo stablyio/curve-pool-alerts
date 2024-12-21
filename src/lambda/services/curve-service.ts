@@ -3,13 +3,16 @@ import axios from 'axios';
 export interface TokenPrice {
     symbol: string;
     price: number;
+    blockchainId: string;
 }
 
 export class CurveService {
     private readonly baseUrl: string;
+    private readonly blockchainId: string;
 
-    constructor(baseUrl: string = 'https://api.curve.fi/v1/getTokens/all/fraxtal') {
-        this.baseUrl = baseUrl;
+    constructor(blockchainId: string) {
+        this.blockchainId = blockchainId;
+        this.baseUrl = `https://api.curve.fi/v1/getTokens/all/${blockchainId}`;
     }
 
     async getTokenPrice(symbol: string): Promise<TokenPrice> {
@@ -19,16 +22,17 @@ export class CurveService {
             const token = tokens.find((t: any) => t.symbol === symbol);
             
             if (!token) {
-                throw new Error(`Token ${symbol} not found`);
+                throw new Error(`Token ${symbol} not found on chain ${this.blockchainId}`);
             }
 
             return {
                 symbol,
-                price: parseFloat(token.usdPrice)
+                price: parseFloat(token.usdPrice),
+                blockchainId: this.blockchainId
             };
         } catch (error) {
             if (error instanceof Error) {
-                throw new Error(`Failed to fetch token price: ${error.message}`);
+                throw new Error(`Failed to fetch token price on chain ${this.blockchainId}: ${error.message}`);
             }
             throw error;
         }

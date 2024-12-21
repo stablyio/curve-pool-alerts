@@ -7,7 +7,8 @@ describe('PriceChecker', () => {
         const checker = new PriceChecker(threshold);
         const tokenPrice: TokenPrice = {
             symbol: 'dUSD',
-            price: 1.00
+            price: 1.00,
+            blockchainId: 'fraxtal'
         };
 
         const result = checker.checkPrice(tokenPrice);
@@ -19,7 +20,8 @@ describe('PriceChecker', () => {
         const checker = new PriceChecker(threshold);
         const tokenPrice: TokenPrice = {
             symbol: 'dUSD',
-            price: 0.98
+            price: 0.98,
+            blockchainId: 'fraxtal'
         };
 
         const result = checker.checkPrice(tokenPrice);
@@ -28,6 +30,7 @@ describe('PriceChecker', () => {
         expect(result?.currentPrice).toBe(0.98);
         expect(result?.threshold).toBe(threshold);
         expect(result?.timestamp).toBeDefined();
+        expect(result?.blockchainId).toBe('fraxtal');
     });
 
      it('should return null when price equals threshold', () => {
@@ -35,7 +38,8 @@ describe('PriceChecker', () => {
         const checker = new PriceChecker(threshold);
          const tokenPrice: TokenPrice = {
             symbol: 'dUSD',
-            price: threshold
+            price: threshold,
+            blockchainId: 'fraxtal'
         };
 
         const result = checker.checkPrice(tokenPrice);
