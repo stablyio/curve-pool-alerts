@@ -10,16 +10,16 @@ export class NotificationService {
 
     async sendAlert(alert: PriceAlert): Promise<void> {
         const message = {
-            text: `🚨 Price Alert for ${alert.symbol}!`,
+            text: `🚨 Price Alert for ${alert.symbol} on ${alert.blockchainId}!`,
             blocks: [
                 {
                     type: "section",
                     text: {
                         type: "mrkdwn",
-                        text: `*Price Alert for ${alert.symbol}*\n\n` +
-                              `Current Price: $${alert.currentPrice.toFixed(4)}\n` +
-                              `Threshold: $${alert.threshold.toFixed(4)}\n` +
-                              `Time: ${new Date(alert.timestamp).toLocaleString()}`
+                        text: `*Price Alert for ${alert.symbol} on ${alert.blockchainId}*\n\n` +
+                            `Current Price: $${alert.currentPrice.toFixed(4)}\n` +
+                            `Threshold: $${alert.threshold.toFixed(4)}\n` +
+                            `Time: ${new Date(alert.timestamp).toLocaleString()}`
                     }
                 }
             ]

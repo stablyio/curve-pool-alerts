@@ -6,6 +6,17 @@ export interface TokenPrice {
     blockchainId: string;
 }
 
+interface CurveApiToken {
+    symbol: string;
+    usdPrice: string;
+}
+
+interface CurveApiResponse {
+    data: {
+        tokens: CurveApiToken[];
+    };
+}
+
 export class CurveService {
     private readonly baseUrl: string;
     private readonly blockchainId: string;
@@ -17,10 +28,10 @@ export class CurveService {
 
     async getTokenPrice(symbol: string): Promise<TokenPrice> {
         try {
-            const response = await axios.get(this.baseUrl);
+            const response = await axios.get<CurveApiResponse>(this.baseUrl);
             const tokens = response.data?.data?.tokens || [];
-            const token = tokens.find((t: any) => t.symbol === symbol);
-            
+            const token = tokens.find((t: CurveApiToken) => t.symbol === symbol);
+
             if (!token) {
                 throw new Error(`Token ${symbol} not found on chain ${this.blockchainId}`);
             }

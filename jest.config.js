@@ -1,5 +1,5 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
-module.exports = {
+const config = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   roots: ['<rootDir>/src'],
@@ -8,3 +8,5 @@ module.exports = {
     '^.+\\.tsx?$': 'ts-jest'
   }
 };
+
+export default config;

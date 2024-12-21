@@ -1,10 +1,10 @@
-import { Context, ScheduledEvent } from 'aws-lambda';
+import { ScheduledEvent } from 'aws-lambda';
 import { CurveService } from './services/curve-service';
 import { PriceChecker } from './services/price-checker';
 import { NotificationService } from './services/notification-service';
 import { config } from './config';
 
-export const handler = async (event: ScheduledEvent, context: Context): Promise<void> => {
+export const handler = async (event: ScheduledEvent): Promise<void> => {
     console.log('Event:', JSON.stringify(event, null, 2));
 
     const notificationService = new NotificationService(config.slackWebhookUrl);

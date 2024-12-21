@@ -34,16 +34,16 @@ describe('Lambda Integration Tests', () => {
             mockedAxios.get.mockResolvedValueOnce({
                 data: {
                     data: {
-                        tokens: chain.tokens.map(t => ({ 
-                            symbol: t.symbol, 
-                            usdPrice: (t.threshold + 0.01).toString() 
+                        tokens: chain.tokens.map(t => ({
+                            symbol: t.symbol,
+                            usdPrice: (t.threshold + 0.01).toString()
                         }))
                     }
                 }
             });
         }
 
-        await handler(mockEvent as any, mockContext);
+        await handler(mockEvent as any);
 
         expect(mockedWebhook.send).not.toHaveBeenCalled();
     });
@@ -54,16 +54,16 @@ describe('Lambda Integration Tests', () => {
             mockedAxios.get.mockResolvedValueOnce({
                 data: {
                     data: {
-                        tokens: chain.tokens.map(t => ({ 
-                            symbol: t.symbol, 
-                            usdPrice: (t.threshold - 0.01).toString() 
+                        tokens: chain.tokens.map(t => ({
+                            symbol: t.symbol,
+                            usdPrice: (t.threshold - 0.01).toString()
                         }))
                     }
                 }
             });
         }
 
-        await handler(mockEvent as any, mockContext);
+        await handler(mockEvent as any);
 
         expect(mockedWebhook.send).toHaveBeenCalled();
         const slackMessage = mockedWebhook.send.mock.calls[0][0];
@@ -82,9 +82,9 @@ describe('Lambda Integration Tests', () => {
             mockedAxios.get.mockResolvedValueOnce({
                 data: {
                     data: {
-                        tokens: config.chains[i].tokens.map(t => ({ 
-                            symbol: t.symbol, 
-                            usdPrice: (t.threshold + 0.01).toString() 
+                        tokens: config.chains[i].tokens.map(t => ({
+                            symbol: t.symbol,
+                            usdPrice: (t.threshold + 0.01).toString()
                         }))
                     }
                 }
@@ -92,7 +92,7 @@ describe('Lambda Integration Tests', () => {
         }
         const consoleSpy = jest.spyOn(console, 'error');
 
-        await handler(mockEvent as any, mockContext);
+        await handler(mockEvent as any);
 
         expect(consoleSpy).toHaveBeenCalledWith(
             `Error checking price for ${config.chains[0].tokens[0].symbol} on ${config.chains[0].blockchainId}:`,
@@ -120,9 +120,9 @@ describe('Lambda Integration Tests', () => {
             mockedAxios.get.mockResolvedValueOnce({
                 data: {
                     data: {
-                        tokens: config.chains[i].tokens.map(t => ({ 
-                            symbol: t.symbol, 
-                            usdPrice: (t.threshold + 0.01).toString() 
+                        tokens: config.chains[i].tokens.map(t => ({
+                            symbol: t.symbol,
+                            usdPrice: (t.threshold + 0.01).toString()
                         }))
                     }
                 }
@@ -130,7 +130,7 @@ describe('Lambda Integration Tests', () => {
         }
         const consoleSpy = jest.spyOn(console, 'error');
 
-        await handler(mockEvent as any, mockContext);
+        await handler(mockEvent as any);
 
         expect(consoleSpy).toHaveBeenCalledWith(
             `Error checking price for ${config.chains[0].tokens[0].symbol} on ${config.chains[0].blockchainId}:`,
