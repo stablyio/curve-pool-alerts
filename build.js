@@ -1,4 +1,4 @@
-const esbuild = require('esbuild');
+import * as esbuild from 'esbuild';
 
 esbuild.build({
     entryPoints: ['src/lambda/index.ts'],
@@ -6,7 +6,7 @@ esbuild.build({
     outfile: 'dist/index.js',
     platform: 'node',
     target: 'node18',
-    format: 'cjs',
+    format: 'esm',
     minify: true,
     sourcemap: true,
 }).catch(() => process.exit(1));
