@@ -26,6 +26,42 @@ npm install
 npm run build
 ```
 
+4. Configure the application:
+```bash
+# Copy the example config file
+cp src/lambda/config.example.ts src/lambda/config.ts
+
+# Edit the config file with your settings
+# Replace YOUR_SLACK_WEBHOOK_URL with your actual Slack webhook URL
+# Customize the chains and tokens you want to monitor
+```
+
+## Testing
+
+Run the test suite:
+```bash
+npm test
+```
+
+The project includes:
+- Unit tests for individual components
+- Integration tests with mocked external services
+- Live integration tests against the Curve API
+
+## Linting
+
+The project uses ESLint with TypeScript support for code quality.
+
+- Run linting check:
+```bash
+npm run lint
+```
+
+- Fix auto-fixable issues:
+```bash
+npm run lint:fix
+```
+
 ## Local Development
 
 - Build the project: `npm run build`
@@ -45,34 +81,6 @@ aws configure
 2. Deploy the stack:
 ```bash
 npm run deploy
-```
-
-### Automated Deployment (GitHub Actions)
-
-The project includes a GitHub Actions workflow that automatically deploys to AWS Lambda when pushing to the main branch.
-
-To enable automated deployments:
-
-1. Add the following secrets to your GitHub repository:
-   - `AWS_ACCESS_KEY_ID`
-   - `AWS_SECRET_ACCESS_KEY`
-
-2. Push to the main branch to trigger deployment.
-
-## Infrastructure
-
-The project uses AWS CDK to define infrastructure as code:
-
-- AWS Lambda function running on Node.js 18.x
-- CloudWatch Events (EventBridge) rule for hourly execution
-- IAM roles and permissions
-
-## Cleanup
-
-To remove all deployed resources:
-
-```bash
-npm run destroy
 ```
 
 ## Project Structure
