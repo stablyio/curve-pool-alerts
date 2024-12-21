@@ -19,10 +19,6 @@ describe('Lambda Integration Tests', () => {
         time: '2023-01-01T00:00:00Z',
         detail: {}
     };
-    const mockContext = {
-        awsRequestId: 'test-request-id',
-        functionName: 'test-function'
-    } as any;
 
     beforeEach(() => {
         jest.clearAllMocks();

@@ -48,10 +48,6 @@ describe('Live Curve API Integration Tests', () => {
         time: new Date().toISOString(),
         detail: {}
     };
-    const mockContext = {
-        awsRequestId: 'test-request-id',
-        functionName: 'test-function'
-    } as any;
 
     let apiResponse: any;
     let consoleSpy: jest.SpyInstance;
