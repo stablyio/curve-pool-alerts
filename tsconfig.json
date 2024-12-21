@@ -18,7 +18,8 @@
     "strictPropertyInitialization": false,
     "outDir": "./dist",
     "rootDir": ".",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   },
   "exclude": ["node_modules", "cdk.out", "dist"]
 }

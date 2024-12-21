@@ -1,0 +1,9 @@
+{
+  "slackWebhookUrl": "YOUR_SLACK_WEBHOOK_URL",
+  "tokens": [
+    {
+      "symbol": "dUSD",
+      "threshold": 0.99
+    }
+  ]
+}
