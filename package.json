@@ -12,12 +12,12 @@
     "test": "jest",
     "lint": "eslint \"**/*.ts\"",
     "lint:fix": "eslint \"**/*.ts\" --fix",
-    "cdk": "cdk",
-    "deploy": "npm run build && cdk deploy",
+    "cdk": "npx cdk",
+    "deploy": "npm run build && node dist/bin/app.js",
     "destroy": "cdk destroy",
     "synth": "cdk synth",
     "diff": "cdk diff",
-    "local": "npm run build && node -e \"require('./dist/index.js').handler({ time: '2023-01-01T00:00:00Z', detail: {} })\""
+    "local": "npm run build && node dist/bin/app.js synth && sam local invoke -t cdk.out/CurvePoolAlertsStack.template.json CurvePoolAlertsLambda --event events/test-event.json"
   },
   "keywords": [],
   "author": "",
@@ -44,5 +44,6 @@
     "aws-lambda": "^1.0.7",
     "aws-sdk": "^2.1499.0",
     "axios": "^1.7.9"
-  }
+  },
+  "type": "module"
 }
