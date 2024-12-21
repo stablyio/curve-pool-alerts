@@ -2,7 +2,9 @@
   "name": "curve-pool-alerts",
   "version": "1.0.0",
   "description": "AWS Lambda bot for Curve pool alerts",
-  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
   "main": "dist/index.js",
   "scripts": {
     "build": "node build.js",
@@ -14,7 +16,8 @@
     "deploy": "npm run build && cdk deploy",
     "destroy": "cdk destroy",
     "synth": "cdk synth",
-    "diff": "cdk diff"
+    "diff": "cdk diff",
+    "local": "npm run build && node -e \"require('./dist/index.js').handler({ time: '2023-01-01T00:00:00Z', detail: {} })\""
   },
   "keywords": [],
   "author": "",
