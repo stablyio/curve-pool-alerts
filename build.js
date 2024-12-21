@@ -6,9 +6,8 @@ esbuild.build({
     outfile: 'dist/index.js',
     platform: 'node',
     target: 'node18',
-    format: 'esm',
+    format: 'cjs',
     minify: true,
     sourcemap: true,
-    external: ['util', 'path', 'http', 'https', 'url', 'fs', 'stream'],
 }).catch(() => process.exit(1));
 ``
