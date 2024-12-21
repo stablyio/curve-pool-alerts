@@ -9,5 +9,6 @@ esbuild.build({
     format: 'esm',
     minify: true,
     sourcemap: true,
+    external: ['util', 'path', 'http', 'https', 'url', 'fs', 'stream'],
 }).catch(() => process.exit(1));
 ``
