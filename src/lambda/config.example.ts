@@ -1,7 +1,8 @@
 export interface TokenConfig {
   symbol: string;
   address: string;
-  threshold: number;
+  lowerThreshold: number;
+  upperThreshold: number;
 }
 
 export interface ChainConfig {
@@ -23,7 +24,8 @@ export const config: Config = {
         {
           symbol: "dUSD",
           address: "0x788D96f655735f52c676A133f4dFC53cEC614d4A",
-          threshold: 0.99,
+          lowerThreshold: 0.99,
+          upperThreshold: 1.01,
         },
       ],
     },
@@ -33,7 +35,8 @@ export const config: Config = {
         {
           symbol: "USDT",
           address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
-          threshold: 0.99,
+          lowerThreshold: 0.99,
+          upperThreshold: 1.01,
         },
       ],
     },

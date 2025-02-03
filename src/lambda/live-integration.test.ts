@@ -14,12 +14,14 @@ jest.mock("./config", () => ({
           {
             symbol: "USDT",
             address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
-            threshold: 0.99,
+            lowerThreshold: 0.99,
+            upperThreshold: 1.01,
           },
           {
             symbol: "USDC",
             address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-            threshold: 0.99,
+            lowerThreshold: 0.99,
+            upperThreshold: 1.01,
           },
         ],
       },
@@ -29,12 +31,14 @@ jest.mock("./config", () => ({
           {
             symbol: "USDT",
             address: "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
-            threshold: 0.99,
+            lowerThreshold: 0.99,
+            upperThreshold: 1.01,
           },
           {
             symbol: "USDC",
             address: "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
-            threshold: 0.99,
+            lowerThreshold: 0.99,
+            upperThreshold: 1.01,
           },
         ],
       },
@@ -66,7 +70,7 @@ describe("Live Curve API Integration Tests", () => {
 
     // Store the console logs for testing
     apiResponse = consoleSpy.mock.calls;
-  });
+  }, 10000); // Give time for the API to respond
 
   afterAll(() => {
     consoleSpy.mockRestore();
@@ -97,8 +101,20 @@ describe("Live Curve API Integration Tests", () => {
       .filter((price: unknown): price is number => price !== null);
 
     prices.forEach((price: number) => {
-      expect(price).toBeGreaterThan(0.9);
-      expect(price).toBeLessThan(1.1);
+      // Check if price is within the widest threshold range across all tokens
+      const minThreshold = Math.min(
+        ...config.chains.flatMap((chain) =>
+          chain.tokens.map((token) => token.lowerThreshold)
+        )
+      );
+      const maxThreshold = Math.max(
+        ...config.chains.flatMap((chain) =>
+          chain.tokens.map((token) => token.upperThreshold)
+        )
+      );
+
+      expect(price).toBeGreaterThan(minThreshold * 0.9); // Allow some margin for extreme cases
+      expect(price).toBeLessThan(maxThreshold * 1.1); // Allow some margin for extreme cases
     });
   });
 

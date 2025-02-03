@@ -24,7 +24,10 @@ export const handler = async (
           `Current ${token.symbol} price on ${chain.blockchainId}: ${tokenPrice.price}`
         );
 
-        const priceChecker = new PriceChecker(token.threshold);
+        const priceChecker = new PriceChecker(
+          token.lowerThreshold,
+          token.upperThreshold
+        );
         const alert = priceChecker.checkPrice(tokenPrice);
 
         if (alert) {

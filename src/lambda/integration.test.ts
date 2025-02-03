@@ -24,7 +24,7 @@ describe("Lambda Integration Tests", () => {
     jest.clearAllMocks();
   });
 
-  it("should not send alert when price is above threshold", async () => {
+  it("should not send alert when price is within thresholds", async () => {
     // Mock responses for each chain
     for (const chain of config.chains) {
       for (const token of chain.tokens) {
@@ -32,7 +32,7 @@ describe("Lambda Integration Tests", () => {
           data: {
             data: {
               address: token.address,
-              usd_price: token.threshold + 0.01,
+              usd_price: (token.lowerThreshold + token.upperThreshold) / 2, // Price in the middle of the range
               last_updated: new Date().toISOString(),
             },
           },
@@ -45,7 +45,7 @@ describe("Lambda Integration Tests", () => {
     expect(mockedWebhook.send).not.toHaveBeenCalled();
   });
 
-  it("should send alert when price is below threshold", async () => {
+  it("should send alert when price is below lower threshold", async () => {
     // Mock responses for each chain
     for (const chain of config.chains) {
       for (const token of chain.tokens) {
@@ -53,7 +53,7 @@ describe("Lambda Integration Tests", () => {
           data: {
             data: {
               address: token.address,
-              usd_price: token.threshold - 0.01,
+              usd_price: token.lowerThreshold - 0.01,
               last_updated: new Date().toISOString(),
             },
           },
@@ -69,9 +69,42 @@ describe("Lambda Integration Tests", () => {
     const firstToken = firstChain.tokens[0];
     expect(slackMessage.text).toContain(firstToken.symbol);
     expect(slackMessage.text).toContain(firstChain.blockchainId);
+    expect(slackMessage.text).toContain("📉"); // Lower threshold emoji
     expect(slackMessage.blocks[0].text.text).toContain(
-      (firstToken.threshold - 0.01).toFixed(4)
+      (firstToken.lowerThreshold - 0.01).toFixed(4)
     );
+    expect(slackMessage.blocks[0].text.text).toContain("below lower threshold");
+  });
+
+  it("should send alert when price is above upper threshold", async () => {
+    // Mock responses for each chain
+    for (const chain of config.chains) {
+      for (const token of chain.tokens) {
+        mockedAxios.get.mockResolvedValueOnce({
+          data: {
+            data: {
+              address: token.address,
+              usd_price: token.upperThreshold + 0.01,
+              last_updated: new Date().toISOString(),
+            },
+          },
+        });
+      }
+    }
+
+    await handler(mockEvent as any);
+
+    expect(mockedWebhook.send).toHaveBeenCalled();
+    const slackMessage = mockedWebhook.send.mock.calls[0][0];
+    const firstChain = config.chains[0];
+    const firstToken = firstChain.tokens[0];
+    expect(slackMessage.text).toContain(firstToken.symbol);
+    expect(slackMessage.text).toContain(firstChain.blockchainId);
+    expect(slackMessage.text).toContain("📈"); // Upper threshold emoji
+    expect(slackMessage.blocks[0].text.text).toContain(
+      (firstToken.upperThreshold + 0.01).toFixed(4)
+    );
+    expect(slackMessage.blocks[0].text.text).toContain("above upper threshold");
   });
 
   it("should handle API errors gracefully", async () => {
@@ -84,7 +117,7 @@ describe("Lambda Integration Tests", () => {
           data: {
             data: {
               address: token.address,
-              usd_price: token.threshold + 0.01,
+              usd_price: (token.lowerThreshold + token.upperThreshold) / 2,
               last_updated: new Date().toISOString(),
             },
           },
@@ -119,7 +152,7 @@ describe("Lambda Integration Tests", () => {
           data: {
             data: {
               address: token.address,
-              usd_price: token.threshold + 0.01,
+              usd_price: (token.lowerThreshold + token.upperThreshold) / 2,
               last_updated: new Date().toISOString(),
             },
           },

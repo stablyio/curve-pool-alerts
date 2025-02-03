@@ -1,26 +1,43 @@
-import { TokenPrice } from './curve-service';
+import { TokenPrice } from "./curve-service";
 
 export interface PriceAlert {
-    symbol: string;
-    currentPrice: number;
-    threshold: number;
-    timestamp: string;
-    blockchainId: string;
+  symbol: string;
+  currentPrice: number;
+  breachedThreshold: number;
+  thresholdType: "lower" | "upper";
+  timestamp: string;
+  blockchainId: string;
 }
 
 export class PriceChecker {
-    constructor(private readonly threshold: number) {}
+  constructor(
+    private readonly lowerThreshold: number,
+    private readonly upperThreshold: number
+  ) {}
 
-    checkPrice(tokenPrice: TokenPrice): PriceAlert | null {
-        if (tokenPrice.price < this.threshold) {
-            return {
-                symbol: tokenPrice.symbol,
-                currentPrice: tokenPrice.price,
-                threshold: this.threshold,
-                timestamp: new Date().toISOString(),
-                blockchainId: tokenPrice.blockchainId,
-            };
-        }
-        return null;
+  checkPrice(tokenPrice: TokenPrice): PriceAlert | null {
+    if (tokenPrice.price < this.lowerThreshold) {
+      return {
+        symbol: tokenPrice.symbol,
+        currentPrice: tokenPrice.price,
+        breachedThreshold: this.lowerThreshold,
+        thresholdType: "lower",
+        timestamp: new Date().toISOString(),
+        blockchainId: tokenPrice.blockchainId,
+      };
     }
+
+    if (tokenPrice.price > this.upperThreshold) {
+      return {
+        symbol: tokenPrice.symbol,
+        currentPrice: tokenPrice.price,
+        breachedThreshold: this.upperThreshold,
+        thresholdType: "upper",
+        timestamp: new Date().toISOString(),
+        blockchainId: tokenPrice.blockchainId,
+      };
+    }
+
+    return null;
+  }
 }
